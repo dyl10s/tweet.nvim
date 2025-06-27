@@ -1,4 +1,4 @@
-# tweet.nvim
+# tweet.nvim (WIP)
 
 A Neovim plugin to tweet directly from your editor.
 
