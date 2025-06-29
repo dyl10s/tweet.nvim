@@ -6,8 +6,9 @@ local M = {}
 
 local tokens = nil
 
-local CLIENT_ID = ""
-local REDIRECT_URI = ""
+local CLIENT_ID = nil
+local REDIRECT_URI = nil
+
 local SCOPES = "tweet.write offline.access"
 local STATE = "nvim is awesome"
 
@@ -17,6 +18,7 @@ end
 
 M.logout = function()
 	token_store.delete_tokens()
+	print("Logout complete!")
 end
 
 M.has_tokens = function()
@@ -91,7 +93,7 @@ end
 -- Command to prompt input and post a tweet
 M.tweet_command = function()
 	if not tokens or not tokens.access_token then
-		print("No access token found. Please run require('tweet').setup() first.")
+		print("No access token found. Please run :TweetLogin or :TweetLoginNoBrowser first.")
 		return
 	end
 

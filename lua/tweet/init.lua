@@ -4,9 +4,14 @@ local async = require("plenary.async")
 
 local M = {}
 
+M.client_id = nil
+M.port = 51899
+M.auto_auth = true
+
 function M.authenticate(useBrowser)
 	useBrowser = (useBrowser == nil) or useBrowser
 
+	assert(M.client_id, "You must provide a client_id, in setup or with TWITTER_CLIENT_ID.")
 	local url = twitter.get_authorization_url()
 
 	if (useBrowser) then
@@ -27,34 +32,34 @@ function M.authenticate(useBrowser)
 
 			local tokens = vim.fn.json_decode(token_resp.body)
 			twitter.set_oauth_tokens(tokens)
+			print("Authentication complete! You can now use :Tweet to post a Tweet.")
 		end)
 	end, function()
 	end)
 end
 
 function M.setup(config)
-	local port = 51899
-	local client_id = nil
-
 	if type(config) == 'table' then
 		if config.port then
-			port = config.port
+			M.port = config.port
 		end
 
 		if config.client_id then
-			client_id = config.client_id
+			M.client_id = config.client_id
+		end
+
+		if config.auto_auth ~= nil then
+			M.auto_auth = config.auto_auth
 		end
 	end
 
-	if client_id == nil then
-		client_id = os.getenv("TWITTER_CLIENT_ID")
+	if M.client_id == nil then
+		M.client_id = os.getenv("TWITTER_CLIENT_ID")
 	end
 
-	assert(client_id, "You must provide a client_id, in setup or with TWITTER_CLIENT_ID.")
+	twitter.setup(M.port, M.client_id)
 
-	twitter.setup(port, client_id)
-
-	if not twitter.has_tokens() then
+	if M.auto_auth and not twitter.has_tokens() then
 		M.authenticate()
 	end
 end
