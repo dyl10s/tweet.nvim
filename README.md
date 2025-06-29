@@ -24,9 +24,9 @@ Example using `lazy.nvim`:
 return { 
     'dyl10s/tweet.nvim',
     opts = {},
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-	}
+    dependencies = {
+	    "nvim-lua/plenary.nvim",
+    }
 }
 ```
 
