@@ -9,7 +9,7 @@ local tokens = nil
 local CLIENT_ID = nil
 local REDIRECT_URI = nil
 
-local SCOPES = "tweet.write offline.access"
+local SCOPES = "users.read tweet.read tweet.write offline.access"
 local STATE = "nvim is awesome"
 
 M.print_token_path = function()
